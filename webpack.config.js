@@ -17,7 +17,7 @@ module.exports = {
         use: 'babel-loader'
       },
       {
-        test: /\.(scss)$/,
+        test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: ['css-loader', 'postcss-loader', 'sass-loader']
@@ -26,14 +26,12 @@ module.exports = {
       {
         test: /\.(jpg|jpeg|gif|png)$/,
         exclude: [/node_modules/, outputPath],
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000
-            }
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10000
           }
-        ]
+        }
       }
     ]
   },
