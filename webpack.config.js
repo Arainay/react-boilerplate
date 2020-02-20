@@ -1,9 +1,9 @@
 const webpack = require('webpack');
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const argv = require('yargs').argv;
 
 const outputPath = path.resolve(__dirname, './build');
@@ -89,15 +89,16 @@ module.exports = {
     new MiniCssExtractPlugin({ filename: 'styles.css' })
   ],
   optimization: isProduction ? {
+    minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-            inline: false,
-            drop_console: true
-          }
-        }
+      new TerserPlugin({
+        parallel: true,
+        terserOptions: {
+          output: {
+            comments: false,
+          },
+        },
+        extractComments: false
       })
     ]
   } : {},
