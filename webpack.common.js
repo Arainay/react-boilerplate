@@ -1,14 +1,13 @@
 const webpack = require('webpack');
 const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const argv = require('yargs').argv;
 
 const outputPath = path.resolve(__dirname, './build');
-const isDevelopment = argv.mode === 'development';
-const isProduction = !isDevelopment;
+const isProduction = argv.mode === 'production';
+const isDevelopment = !isProduction;
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.js'),
@@ -22,13 +21,17 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
+          isDevelopment ? 'style-loader' : {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              esModule: true
+            }
+          },
           'css-loader',
           {
             loader: 'postcss-loader',
             options: {
               plugins: [
-                isProduction ? require('cssnano') : () => {},
                 require('autoprefixer')
               ]
             }
@@ -43,7 +46,9 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              limit: 10000
+              limit: 10000,
+              name: '[hash].[ext]',
+              outputPath: 'images'
             }
           },
           {
@@ -85,35 +90,8 @@ module.exports = {
       template: path.join(__dirname, './src/assets/index.html'),
       filename: 'index.html',
       path: outputPath
-    }),
-    new MiniCssExtractPlugin({ filename: 'styles.css' })
+    })
   ],
-  optimization: isProduction ? {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          output: {
-            comments: false,
-          },
-        },
-        extractComments: false
-      })
-    ],
-    concatenateModules: true,
-    moduleIds: 'hashed',
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        }
-      }
-    }
-  } : {},
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
