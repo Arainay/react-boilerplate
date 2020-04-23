@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { render } from 'react-dom';
 import App from '@app/components/App';
 
 render(
-  <App/>,
+  <Suspense fallback={<div>Loading...</div>}>
+    <App/>
+  </Suspense>,
   document.getElementById('root')
 );
