@@ -1,13 +1,9 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const argv = require('yargs').argv;
 
 const outputPath = path.resolve(__dirname, './build');
-const isProduction = argv.mode === 'production';
-const isDevelopment = !isProduction;
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.js'),
@@ -17,27 +13,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: [/node_modules/, outputPath],
         use: ['babel-loader', 'eslint-loader']
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          isDevelopment ? 'style-loader' : {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              esModule: true
-            }
-          },
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: [
-                require('autoprefixer')
-              ]
-            }
-          },
-          'sass-loader'
-        ]
       },
       {
         test: /\.(jpg|jpeg|gif|png)$/,
