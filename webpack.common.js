@@ -2,8 +2,10 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const argv = require('yargs').argv;
 
 const outputPath = path.resolve(__dirname, './build');
+const isCompress = argv.compress;
 
 module.exports = {
   entry: path.resolve(__dirname, './src/index.js'),
@@ -64,7 +66,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, './src/assets/index.html'),
       filename: 'index.html',
-      path: outputPath
+      path: outputPath,
+      jsExtension: isCompress ? '.gz' : ''
     })
   ],
   resolve: {
@@ -80,6 +83,7 @@ module.exports = {
     inline: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
     https: false,
-    disableHostCheck: true
+    disableHostCheck: true,
+    compress: true
   }
 };

@@ -4,7 +4,7 @@
   "scripts": {
     "start": "webpack-dev-server --config webpack.dev.js --progress --color",
     "start:prod": "webpack-dev-server --config webpack.prod.js --progress --color",
-    "build": "webpack --config webpack.build.js",
+    "build": "webpack --config webpack.build.js --compress",
     "analyze": "webpack --config webpack.analyze.js"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
+    "compression-webpack-plugin": "^3.1.0",
     "css-loader": "^3.5.2",
     "cssnano": "^4.1.10",
     "eslint": "^6.8.0",
@@ -26,6 +27,7 @@
     "eslint-plugin-react": "^7.19.0",
     "file-loader": "^6.0.0",
     "html-critical-webpack-plugin": "^2.1.0",
+    "html-webpack-change-assets-extension-plugin": "^1.2.0",
     "html-webpack-plugin": "^4.2.0",
     "image-webpack-loader": "^6.0.0",
     "imagemin-gifsicle": "^7.0.0",
@@ -46,6 +48,7 @@
     "webpack-bundle-analyzer": "^3.7.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
-    "webpack-merge": "^4.2.2"
+    "webpack-merge": "^4.2.2",
+    "yargs": "^15.3.1"
   }
 }
